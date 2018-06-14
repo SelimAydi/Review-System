@@ -1,0 +1,15 @@
+Reviewformulier sollicitatie opdracht
+Gemaakt door: Selim Aydi
+
+-------------------------------------------------
+Benodigdheden: Python 3.xx, pip, Django 1.9
+-------------------------------------------------
+
+Instructies
+
+In command prompt: pip install Django==1.9
+
+Open command prompt in de root van de map, waar manage.py in zit.
+
+In command prompt: python manage.py runserver
+

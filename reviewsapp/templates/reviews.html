@@ -1,0 +1,61 @@
+{% load staticfiles %}
+{% load custom_tags %}
+<!DOCTYPE html>
+	<head>
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<title>Reviews</title>
+	</head>
+	<body>
+	
+		{% autoescape off %}
+			{% showButton %}
+		{% endautoescape %}
+	
+		<h2 style="margin-top: 15%; margin-top: 3%; position: absolute;">{ een webshop }</h1>
+		<h1 style="margin-top: 17%">Dit zijn onze reviews</h1>
+		
+		<div class="avgdivs">
+			{% autoescape off %}
+				{% getAvgStars %}
+				<div class="avg">
+				<p>Aantal reviews:</p><p>{% getAmountofReviews %} reviews</p>
+				</div>
+			{% endautoescape %}
+		</div>
+
+		<div class="frames">
+			{% for i in rows %}
+			{% with rating=i.rating %}
+			<div class="frame hoverframe" style="padding: 10px; {% if forloop.counter0|divisibleby:2 %} margin-left: -10vh; background-color: #02567c; {% else %} margin-left: 10vh; background-color: #1b7ba6;{% endif %} width: 60vh; box-shadow: none; border: solid 4px #ffffff1c">
+				<table cellspacing="0" cellpadding="0">
+					<tbody>
+					<tr>
+						<th>Datum</th>
+						<td>{{ i.date }}</td>
+					</tr>
+					<tr>
+						<th>Naam</th>
+						<td>{{ i.user_name }}</td>
+					</tr>
+					<tr>
+						<th>Beoordeling</th>
+						<td>
+						{% autoescape off %}
+						{% getStars rating %}
+						{% endautoescape %}
+						</td>
+					</tr>
+					<tr>
+						<th>Review</th>
+						<td>{{ i.review }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			{% endwith %}
+			{% endfor %}
+		</div>
+	</body>
+</html>

@@ -1,0 +1,108 @@
+{% load staticfiles %}
+{% load custom_tags %}
+<!DOCTYPE html>
+	<head>
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<title>Reviews</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<script>
+		function hide() {
+			var	label = document.getElementById('label1');
+			var style = label.currentStyle ? label.currentStyle.display : getComputedStyle(label, null).display;
+			console.log(style)
+			if(style != 'none'){
+				$(label1).fadeOut("slow");
+				$(id_user_name).fadeOut("slow");
+			} else {
+				$(label1).fadeIn("slow");
+				$(id_user_name).fadeIn("slow");
+			}
+		}
+	  </script>
+	  <script>
+		  $(document).ready(function(){
+		  
+		  $('#stars li').on('mouseover', function(){
+			var onStar = parseInt($(this).data('value'), 10); 
+		   
+
+			$(this).parent().children('li.star').each(function(e){
+			  if (e < onStar) {
+				$(this).addClass('hover');
+			  }
+			  else {
+				$(this).removeClass('hover');
+			  }
+			});
+			
+		  }).on('mouseout', function(){
+			$(this).parent().children('li.star').each(function(e){
+			  $(this).removeClass('hover');
+			});
+		  });
+		  
+
+		  $('#stars li').on('click', function(){
+			var onStar = parseInt($(this).data('value'), 10); 
+			var stars = $(this).parent().children('li.star');
+			
+			for (i = 0; i < stars.length; i++) {
+			  $(stars[i]).removeClass('selected');
+			}
+			
+			for (i = 0; i < onStar; i++) {
+			  $(stars[i]).addClass('selected');
+			}
+			
+			var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+			$('#rating').val(ratingValue);
+			
+		  });
+		  
+		  
+		  });
+		</script>
+	<head>
+	<body>
+		<h2><i class="fas fa-check"></i>Bestelling voltooid!</h1>
+		<h1>Laat een review achter</h1>
+		<div class="frame">
+			{% if errors %}
+			<ul>
+				{% for error in errors %}
+				<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			<div class="formsection">
+				<form method="post" id="reviewform" action="{% url 'reviews:postreview' %}">
+					{% csrf_token %}
+					<input type="hidden" id="rating" name="rating" value="0">
+					<div class="ratediv">    
+						<label style="text-align: center; margin: 0 auto; float: center; display: block;"> Beoordeling </label>                
+					<div class="rating-stars text-center">
+						<ul id="stars">
+							{% for i in "xxxxxxxxxx" %}			
+								<li class="star" title="{{forloop.counter}}" name="rating" data-value="{{forloop.counter}}">
+									<i class="fa fa-star fa-fw"></i>
+								</li>
+							{% endfor %}
+							</ul>
+							<span></span>
+					</div>
+					</div>
+					<input type="checkbox" onChange="hide()" name="anon" id="checkboxanon">
+					<label id="anonlabel"> (of anoniem blijven?) </label>
+					{% for field in form %}
+						<label id="label{{ forloop.counter }}" for="{{ field.name }}">{{ field.label }}</label>
+						{{ field }}
+					{% endfor %}
+					<button type="submit">Versturen</button>
+				</form>
+			</div>
+		</div>
+		<a href="{% url 'reviews:reviewview' %}" id="link">Bekijk bestaande reviews</a>
+	</body>
+</html>
